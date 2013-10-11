@@ -24,6 +24,7 @@ kods = *(id1..id2)
 arr = []
 
 kods.each do |id|
+  begin
   page = agent.get("http://w1.c1.rada.gov.ua/pls/radan_gs09/ns_golos_print?g_id="+id.to_s+"&vid=1")
   n = page.search('tr').length-1
   arr[1] = page.search('tr')[1].children.children[6].text.gsub(/\n/, "")
@@ -34,8 +35,12 @@ kods.each do |id|
   for i in arr2 
     if page.search('tr')[i].children.size == 1 && page.search('tr')[i].text.size > 2
       case page.search('tr')[i].text
-      when /Фракція.*України/ 
-        arr[0] = page.search('tr')[2].text.match(/Фракція.*України/).to_s.gsub(/\n/, "")
+      when /Фракція Партії.*України/ 
+        arr[0] = "Фракція Партії Регіонів"
+      when /Фракція.*Батьківщина.*/
+        arr[0] = "Фракція Батьківщини"
+      when /Фракція Комуністичної.*/
+        arr[0] = "Фракція КПУ"
       when /Фракція.*Кличка/
         arr[0] = "Фракція Політичної партії УДАР"
       when  /Фракція.*Свобода/
@@ -55,4 +60,7 @@ kods.each do |id|
   end
   puts id 
   sleep 2
+  rescue
+    next
+  end
 end
