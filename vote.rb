@@ -38,14 +38,16 @@ kods.each do |kod|
   arr[0] = page.search('tr')[1].text.strip.split(/\n/)[0] 
   n = page.search('tr').length-1
   arr2 = *(4..n)
+  element1 = page.search('tr')[i].children.children
+  element2 = page.search('tr')[i+1].text.split(/\n/)
   for i in arr2 
 
     if page.search('tr')[i].children.size == 6
-      arr[1] = page.search('tr')[i].children.children[0].text 
-      arr[2] = page.search('tr')[i].children.children[1].text.strip.gsub(/\n/, "")
-      arr[3] = page.search('tr')[i].children.children[2].text.strip 
-      arr[4] = page.search('tr')[i+1].text.split(/\n/)[1].match(/\d.*/).to_s
-      arr[5] = page.search('tr')[i+1].text.split(/\n/)[2].match(/За-\d*/).to_s
+      arr[1] = element[0].text 
+      arr[2] = element[1].text.strip.gsub(/\n/, "")
+      arr[3] = element[2].text.strip 
+      arr[4] = element2[1].match(/\d.*/).to_s
+      arr[5] = element2[2].match(/За-\d*/).to_s
       if page.search('tr')[i-1].text.match(/\A\d{2}\.\d{2}.\d{4}\z/)
         arr[6] = page.search('tr')[i-1].text   
       end
